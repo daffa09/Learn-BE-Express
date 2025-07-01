@@ -1,10 +1,13 @@
 {
-  "name": "day-1",
+  "name": "day-2",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "ts-node-dev src/app.ts"
+    "dev": "ts-node-dev --respawn src/app.ts"
+  },
+  "prisma": {
+    "seed": "ts-node src/connection/seed.ts"
   },
   "keywords": [],
   "author": "",
@@ -12,7 +15,9 @@
   "type": "commonjs",
   "description": "",
   "dependencies": {
-    "express": "^5.1.0"
+    "@prisma/client": "^6.10.1",
+    "express": "^5.1.0",
+    "prisma": "^6.10.1"
   },
   "devDependencies": {
     "@types/express": "^5.0.3",
