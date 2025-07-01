@@ -1,14 +1,14 @@
-import  express  from  "express";
-import postRoutes from "./routes";
+// src/index.ts
+import express from "express";
 
-const app = express()
-const PORT = 3000
+import authRoute from "./routes/auth";
 
+const app = express();
 app.use(express.json());
 
-app.use("/api/v1", postRoutes)
+app.use("/auth", authRoute);
 
-
+const PORT = process.env.PORT ?? 3000;
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`)
-})
+  console.log(`✅ Server running at http://localhost:${PORT}`);
+});
