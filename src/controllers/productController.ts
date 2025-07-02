@@ -5,7 +5,7 @@ import Joi from "joi";
 
 
 export const getProducts: RequestHandler = async (req, res) => {
-  const products = await prisma.productss.findMany();
+  const products = await prisma.product.findMany();
   res.status(200).json({code: 200, status: "success", message: "Get product successfuly", data: products});
 }
 
@@ -24,7 +24,7 @@ export const createProduct: RequestHandler = async (req, res) => {
     return;
   }
 
-    const newProduct = await prisma.productss.create({
+    const newProduct = await prisma.product.create({
     data: { name, price, stock }
   });
 

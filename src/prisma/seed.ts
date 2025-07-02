@@ -4,7 +4,7 @@ const prisma = new PrismaClient();
 
 async function main() {
   // clear data
-  await prisma.productss.deleteMany();
+  await prisma.product.deleteMany();
   await prisma.user.deleteMany();
 
   // create users
@@ -17,7 +17,7 @@ async function main() {
   });
 
   // create Products
-  const products = await prisma.productss.createMany({
+  const products = await prisma.product.createMany({
     data: [
       {name: "Keyboard", price: 350_000, stock: 12 },
       {name: "Mouse", price: 150_000, stock: 30 },

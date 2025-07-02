@@ -1,9 +1,9 @@
 // src/controllers/auth.controller.ts
-import { Request, Response } from "express";
+import { RequestHandler } from "express";
 import { registerUser, loginUser } from "../services/auth";
 import { loginSchema, registerSchema } from "../validation/auth";
 
-export async function handleRegister(req: Request, res: Response) {
+export const handleRegister:RequestHandler = async (req, res) => {
   try {
     const { error } = registerSchema.validate(req.body);
     if (error) {
@@ -11,15 +11,22 @@ export async function handleRegister(req: Request, res: Response) {
       return;
     }
 
+
+    if (!req.file) {
+      res.status(400).json({ code: 400, status: "error", message: "no file upload", data:[] });
+      return;
+    }
+
     const { email, password } = req.body;
-    const user = await registerUser(email, password);
+    const profile = req.file?.filename
+    const user = await registerUser(email, password, profile);
     res.status(201).json({ code:201, status: "success", message: "User registered", data: user });
   } catch (err: any) {
     res.status(400).json({ code: 400, status: "error", message: err.message, data:[] });
   }
 }
 
-export async function handleLogin(req: Request, res: Response) {
+export const handleLogin: RequestHandler = async (req, res) => {
   try {
     const { error } = loginSchema.validate(req.body);
     if (error) {
