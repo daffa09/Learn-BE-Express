@@ -1,1 +1,1 @@
-# Day 5 – Authentication, Authorization, and Security
+# Day 6 – File Upload, Session, and Security Part 2
