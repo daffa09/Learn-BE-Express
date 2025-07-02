@@ -14,3 +14,9 @@ model User {
   role     String @default("user")
 }
 
+model Product {
+  id          Int     @id @default(autoincrement())
+  name        String
+  price       Float
+  stock       Int     @default(0)
+}

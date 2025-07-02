@@ -1,21 +1,34 @@
 import { RequestHandler } from "express";
-import { products, Product } from "../models/productModel";
+import { products } from "../models/productModel";
+import {prisma} from "../prisma/client";
+import Joi from "joi";
 
-export const getProducts: RequestHandler = (req, res) => {
-  res.json(products);
+
+export const getProducts: RequestHandler = async (req, res) => {
+  const products = await prisma.productss.findMany();
+  res.status(200).json({code: 200, status: "success", message: "Get product successfuly", data: products});
 }
-export const createProduct: RequestHandler = (req, res) => {
+
+export const createProduct: RequestHandler = async (req, res) => {
   const {name, price, stock} = req.body;
 
-  const newProduct:Product = {
-    id: products.length + 1,
-    name: name,
-    price: price,
-    stock: stock
+  const productSchema = Joi.object({
+    name: Joi.string().min(3).required(),
+    price: Joi.number().positive().required(),
+    stock: Joi.number().integer().min(0).required()
+  });
+
+  const { error } = productSchema.validate({ name, price, stock });
+  if (error) {
+    res.status(400).json({ code:400, status: "error", message: error.details[0].message, data:[] });
+    return;
   }
 
-  products.push(newProduct);
-  res.status(201).json(newProduct);
+    const newProduct = await prisma.productss.create({
+    data: { name, price, stock }
+  });
+
+  res.status(201).json({ code:201, status: "success", message: "Product created successfully", data: newProduct });
 }
 
 export const deleteProduct: RequestHandler = (req, res) => {
