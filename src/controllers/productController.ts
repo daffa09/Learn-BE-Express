@@ -3,7 +3,6 @@ import { products } from "../models/productModel";
 import {prisma} from "../prisma/client";
 import Joi from "joi";
 
-
 export const getProducts: RequestHandler = async (req, res) => {
   const products = await prisma.product.findMany();
   res.status(200).json({code: 200, status: "success", message: "Get product successfuly", data: products});
@@ -21,12 +20,13 @@ export const createProduct: RequestHandler = async (req, res) => {
   const { error } = productSchema.validate({ name, price, stock });
   if (error) {
     res.status(400).json({ code:400, status: "error", message: error.details[0].message, data:[] });
+    res.status(400).json({ message: error.details[0].message });
     return;
   }
 
     const newProduct = await prisma.product.create({
-    data: { name, price, stock }
-  });
+      data: { name, price, stock }
+    });
 
   res.status(201).json({ code:201, status: "success", message: "Product created successfully", data: newProduct });
 }

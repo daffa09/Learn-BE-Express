@@ -35,8 +35,14 @@ export const handleLogin: RequestHandler = async (req, res) => {
     }
 
     const { email, password } = req.body;
-
     const result = await loginUser(email, password);
+
+    res.cookie("token", result, {
+      httpOnly: true,
+      sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 hari
+    });
+
     res.status(200).json({ code: 200, status: "success", message: "Login success", data: {...result} });
   } catch (err: any) {
     res.status(401).json({ code: 401, status: "error", message: err.message, data:[] });
