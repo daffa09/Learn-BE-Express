@@ -1,14 +1,15 @@
-import  express  from  "express";
-import postRoutes from "./routes";
+import express from "express";
+import router from "./routes";
+import { errorHandler } from "./middleware/errorHandler";
 
-const app = express()
-const PORT = 3000
+const app = express();
 
 app.use(express.json());
+app.use("/api/v1", router);
 
-app.use("/api/v1", postRoutes)
+// global error handler
+app.use(errorHandler);
 
-
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`)
-})
+app.listen(3000, () => {
+  console.log(`Server is running on port 3000`);
+});
